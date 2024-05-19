@@ -396,7 +396,7 @@ spec:
         app: group-message-service
     spec:
       containers:
-        - image: icedsoul/group-message-service
+        - image: cyberic-icus/group-message-service
           name: group-message-service
           ports:
             - containerPort: 8081
@@ -432,7 +432,7 @@ spec:
         app: group-service
     spec:
       containers:
-        - image: icedsoul/group-service
+        - image: cyberic-icus/group-service
           name: group-service
           ports:
             - containerPort: 8081
@@ -469,7 +469,7 @@ spec:
         app: message-service
     spec:
       containers:
-        - image: icedsoul/message-service
+        - image: cyberic-icus/message-service
           name: message-service
           ports:
             - containerPort: 8081
@@ -505,7 +505,7 @@ spec:
         app: offline-message-service
     spec:
       containers:
-        - image: icedsoul/offline-message-service
+        - image: cyberic-icus/offline-message-service
           name: offline-message-service
           ports:
             - containerPort: 8081
@@ -541,7 +541,7 @@ spec:
         app: ui-service
     spec:
       containers:
-        - image: icedsoul/ui-service
+        - image: cyberic-icus/ui-service
           imagePullPolicy: Always
           name: ui-service
           ports:
@@ -578,7 +578,7 @@ spec:
         app: user-relation-service
     spec:
       containers:
-        - image: icedsoul/user-relation-service
+        - image: cyberic-icus/user-relation-service
           name: user-relation-service
           ports:
             - containerPort: 8081
@@ -615,7 +615,7 @@ spec:
         app: user-service
     spec:
       containers:
-        - image: icedsoul/user-service
+        - image: cyberic-icus/user-service
           name: user-service
           ports:
             - containerPort: 8081
@@ -651,7 +651,7 @@ spec:
         app: websocket-server-service
     spec:
       containers:
-        - image: icedsoul/websocket-server-service
+        - image: cyberic-icus/websocket-server-service
           name: websocket-server-service
           ports:
             - containerPort: 8282

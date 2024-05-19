@@ -118,7 +118,7 @@ services:
   # common service
   user-service:
     build: ../../user-service
-    image: icedsoul/user-service
+    image: cyberic-icus/user-service
     restart: always
     ports:
       - 8081
@@ -134,7 +134,7 @@ services:
 
   user-relation-service:
     build: ../../user-relation-service
-    image: icedsoul/user-relation-service
+    image: cyberic-icus/user-relation-service
     depends_on:
       - user-relation-mysql
     restart: always
@@ -150,7 +150,7 @@ services:
 
   message-service:
     build: ../../message-service
-    image: icedsoul/message-service
+    image: cyberic-icus/message-service
     depends_on:
       - message-mysql
     restart: always
@@ -166,7 +166,7 @@ services:
 
   group-service:
     build: ../../group-service
-    image: icedsoul/group-service
+    image: cyberic-icus/group-service
     depends_on:
       - group-mysql
     restart: always
@@ -182,7 +182,7 @@ services:
 
   group-message-service:
     build: ../../group-message-service
-    image: icedsoul/group-message-service
+    image: cyberic-icus/group-message-service
     depends_on:
       - group-message-mysql
     restart: always
@@ -198,7 +198,7 @@ services:
 
   offline-message-service:
     build: ../../offline-message-service
-    image: icedsoul/offline-message-service
+    image: cyberic-icus/offline-message-service
     depends_on:
       - offline-message-mysql
     restart: always
@@ -215,7 +215,7 @@ services:
   # ui-service
   ui-service:
     build: ../../ui-service
-    image: icedsoul/ui-service
+    image: cyberic-icus/ui-service
     restart: always
     ports:
       - 80:8081
@@ -231,7 +231,7 @@ services:
   # websocket service
   websocket-server-service:
     build: ../../websocket-server-service
-    image: icedsoul/websocket-server-service
+    image: cyberic-icus/websocket-server-service
     restart: always
     ports:
       - 8282
