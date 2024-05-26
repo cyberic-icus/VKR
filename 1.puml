@@ -1,0 +1,124 @@
+@startuml Мессенджер образовательной платформы
+
+' Страница с отношениями акторов
+left to right direction
+skinparam defaultFontName Liberation Sans
+actor Гость as Guest
+actor Пользователь as User
+actor Администратор as Admin
+
+Guest --|> User
+Admin --|> User
+
+' Пользователь гость
+newpage
+left to right direction
+skinparam defaultFontName Liberation Sans
+
+actor Гость as Guest
+actor Пользователь as User
+
+Guest --|> User
+
+package "Мессенджер образовательной платформы" as Software {
+
+usecase "Зарегистрироваться" as ZAREGISTRIRAVATSA
+usecase "Авторизироваться" as AVTORIZIRAVATSA
+
+usecase "Просмотреть список друзей" as PROSMOTRET_SPISOK_DRUZEI
+usecase "Искать пользователя" as ISKAT_POLZOVATELYA
+usecase "Просмотреть чат с другом" as PROSMOTRET_CHAT_S_DRUGOM
+usecase "Просмотреть профиль пользователя" as PROSMOTRET_PROFIL_POLZOVATELYA
+usecase "Отправить текстовое сообщение" as OTPRAVIT_TEKSTOVOE_SOOBSHENIE
+usecase "Отправить файл" as OTPRAVIT_FAIL
+usecase "Отправить смайлик" as OTPRAVIT_SMAYLIK
+
+usecase "Просмотреть список курсов" as PROSMOTRET_SPISOK_KURSOV
+usecase "Просмотреть список тем" as PROSMOTRET_SPISOK_TEM
+usecase "Просмотреть список подтем" as PROSMOTRET_SPISOK_PODTEM
+usecase "Просмотреть чат подтемы" as PROSMOTRET_CHAT_PODTEMI
+
+usecase "Создать групповой чат" as SOZDAT_GRUPPOVOY_CHAT
+usecase "Добавить пользователя в друзья" as DOBAVIT_DRUGA
+usecase "Просмотреть групповой чат" as PROSMOTRET_GRUPPOVOY_CHAT
+usecase "Пригласить пользователя в групповой чат" as PRIGLASIT_POLZOVATELYA_V_GRUPPOVOY_CHAT
+
+usecase "Получить уведомление" as POLUCHIT_UVEDOMLENIE
+
+usecase "Выбрать друга" as VIBRAT_DRUGA
+usecase "Выбрать курс" as VIBRAT_KURS
+usecase "Выбрать тему" as VIBRAT_TEMU
+usecase "Выбрать подтему" as VIBRAT_PODTEMU
+usecase "Выбрать групповой чат" as VIBRAT_GRUPPOVOY_CHAT
+
+' Гости
+Guest --> ZAREGISTRIRAVATSA
+Guest --> AVTORIZIRAVATSA
+
+' Пользователи
+User --> PROSMOTRET_SPISOK_DRUZEI
+User --> ISKAT_POLZOVATELYA
+User --> PROSMOTRET_SPISOK_KURSOV
+User --> SOZDAT_GRUPPOVOY_CHAT
+User --> POLUCHIT_UVEDOMLENIE
+User --> PROSMOTRET_GRUPPOVOY_CHAT
+
+' Включения и расширения
+PROSMOTRET_SPISOK_DRUZEI <.. PROSMOTRET_CHAT_S_DRUGOM : <<extend>>
+VIBRAT_DRUGA <.. PROSMOTRET_CHAT_S_DRUGOM : <<include>>
+PROSMOTRET_CHAT_S_DRUGOM <.. OTPRAVIT_TEKSTOVOE_SOOBSHENIE : <<extend>>
+PROSMOTRET_CHAT_S_DRUGOM <.. PROSMOTRET_PROFIL_POLZOVATELYA : <<extend>>
+'ISKAT_POLZOVATELYA
+
+ISKAT_POLZOVATELYA <.. DOBAVIT_DRUGA : <<extend>>
+
+
+PROSMOTRET_SPISOK_KURSOV <.. PROSMOTRET_SPISOK_TEM : <<extend>>
+VIBRAT_KURS <.. PROSMOTRET_SPISOK_TEM : <<include>>
+
+PROSMOTRET_SPISOK_TEM <.. PROSMOTRET_SPISOK_PODTEM : <<extend>>
+VIBRAT_TEMU <.. PROSMOTRET_SPISOK_PODTEM : <<include>>
+
+PROSMOTRET_SPISOK_PODTEM <.. PROSMOTRET_CHAT_PODTEMI : <<extend>>
+VIBRAT_PODTEMU <.. PROSMOTRET_CHAT_PODTEMI : <<include>>
+
+VIBRAT_GRUPPOVOY_CHAT <.. PROSMOTRET_GRUPPOVOY_CHAT : <<include>>
+
+
+SOZDAT_GRUPPOVOY_CHAT <.. PROSMOTRET_GRUPPOVOY_CHAT : <<extend>>
+PROSMOTRET_GRUPPOVOY_CHAT <.. OTPRAVIT_TEKSTOVOE_SOOBSHENIE : <<extend>>
+PROSMOTRET_GRUPPOVOY_CHAT <.. PRIGLASIT_POLZOVATELYA_V_GRUPPOVOY_CHAT : <<extend>>
+
+OTPRAVIT_TEKSTOVOE_SOOBSHENIE <.. OTPRAVIT_FAIL : <<extend>>
+OTPRAVIT_TEKSTOVOE_SOOBSHENIE <.. OTPRAVIT_SMAYLIK : <<extend>>
+
+PROSMOTRET_CHAT_PODTEMI --|> PROSMOTRET_GRUPPOVOY_CHAT
+
+}
+
+' Администратор
+newpage
+left to right direction
+skinparam defaultFontName Liberation Sans
+
+actor Администратор as Admin
+
+package "Мессенджер образовательной платформы" as Software {
+
+usecase "Просмотреть статистику сообщений" as PROSMOTRET_STATISTIKU_SOOBSHENIY
+usecase "Просмотреть активность пользователей" as PROSMOTRET_AKTIVNOST_POLZOVATELEY
+usecase "Просмотреть активность в темах" as PROSMOTRET_AKTIVNOST_V_TEMAH
+
+PROSMOTRET_STATISTIKU_SOOBSHENIY --|> PROSMOTRET_AKTIVNOST_POLZOVATELEY
+PROSMOTRET_AKTIVNOST_POLZOVATELEY --|> PROSMOTRET_AKTIVNOST_V_TEMAH
+
+PROSMOTRET_AKTIVNOST_POLZOVATELEY <.. PROSMOTRET_STATISTIKU_SOOBSHENIY : <<extend>>
+PROSMOTRET_AKTIVNOST_V_TEMAH <.. PROSMOTRET_AKTIVNOST_POLZOVATELEY : <<extend>>
+
+Admin --> PROSMOTRET_STATISTIKU_SOOBSHENIY
+Admin --> PROSMOTRET_AKTIVNOST_POLZOVATELEY
+Admin --> PROSMOTRET_AKTIVNOST_V_TEMAH
+
+}
+
+@enduml

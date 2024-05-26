@@ -14,7 +14,7 @@ import java.sql.Timestamp;
 public class Message implements Comparable<Message> {
     @Id
     @GeneratedValue
-    @Column(nullable = false, columnDefinition = "Int(11) COMMENT 'Сообщение первичный ключ'")
+    @Column(nullable = false, columnDefinition = "Int(11) COMMENT 'Первичный ключ'")
     private int id;
 
     @Column(nullable = false, columnDefinition = "Int(11) COMMENT 'ID отправителя сообщения'")
