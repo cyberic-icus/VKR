@@ -7,6 +7,7 @@ actor Гость as Guest
 actor Пользователь as User
 actor Администратор as Admin
 
+
 Guest --|> User
 Admin --|> User
 
@@ -108,16 +109,12 @@ package "Мессенджер образовательной платформы"
 usecase "Просмотреть статистику сообщений" as PROSMOTRET_STATISTIKU_SOOBSHENIY
 usecase "Просмотреть активность пользователей" as PROSMOTRET_AKTIVNOST_POLZOVATELEY
 usecase "Просмотреть активность в темах" as PROSMOTRET_AKTIVNOST_V_TEMAH
-
-PROSMOTRET_STATISTIKU_SOOBSHENIY --|> PROSMOTRET_AKTIVNOST_POLZOVATELEY
-PROSMOTRET_AKTIVNOST_POLZOVATELEY --|> PROSMOTRET_AKTIVNOST_V_TEMAH
-
-PROSMOTRET_AKTIVNOST_POLZOVATELEY <.. PROSMOTRET_STATISTIKU_SOOBSHENIY : <<extend>>
-PROSMOTRET_AKTIVNOST_V_TEMAH <.. PROSMOTRET_AKTIVNOST_POLZOVATELEY : <<extend>>
+usecase "Заблокировать пользователя" as ZABLOKITOVAT
 
 Admin --> PROSMOTRET_STATISTIKU_SOOBSHENIY
 Admin --> PROSMOTRET_AKTIVNOST_POLZOVATELEY
 Admin --> PROSMOTRET_AKTIVNOST_V_TEMAH
+Admin --> ZABLOKITOVAT
 
 }
 

@@ -47,7 +47,6 @@ public class UserRelationServiceImpl implements UserRelationService {
         Timestamp timestamp = new Timestamp(date.getTime());
         userRelation.setRelationStart(timestamp);
         userRelationRepository.save(userRelation);
-        // Здесь используется удаленный сетевой вызов, пока используем синхронный способ. Если возникнут проблемы с производительностью, можно рассмотреть асинхронный способ.
         MultiValueMap<String, Integer> requestEntity = new LinkedMultiValueMap<>();
         requestEntity.add("userIdA", userIdA);
         requestEntity.add("userIdB", userIdB);
