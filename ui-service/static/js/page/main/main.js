@@ -272,6 +272,11 @@ function listRelation() {
         'Список групп' +
         '</a>' +
         '</li>' +
+        '<li class="justifile text-center">' +
+        '<a href="#groupPeople" data-toggle="tab">' +
+        'Список курсов' +
+        '</a>' +
+        '</li>' +
         '</ul>' +
         '<div class="tab-content">' +
         '<div class="tab-pane fade in active" id="relationPeople">';

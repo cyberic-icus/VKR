@@ -1,14 +1,214 @@
 version: '3'
 services:
-  jenkins:
-    image: jenkins/jenkins:lts
-    container_name: jenkins
+  # mysql
+  #  user-mysql:
+  #    image: mysql:5.6
+  #    ports:
+  #    - 3307:3306
+  #    command: [
+  #      --character-set-server=utf8mb4,
+  #      --collation-server=utf8mb4_unicode_ci
+  #    ]
+  #    environment:
+  #      MYSQL_ROOT_PASSWORD: root
+  #      MYSQL_DATABASE: user
+  #    volumes:
+  #    - ../../user-mysql/data:/var/lib/mysql
+  #    networks:
+  #    - vkr-network
+  #
+  #  user-relation-mysql:
+  #    image: mysql:5.6
+  #    ports:
+  #    - 3308:3306
+  #    command: [
+  #      --character-set-server=utf8mb4,
+  #      --collation-server=utf8mb4_unicode_ci
+  #    ]
+  #    environment:
+  #      MYSQL_ROOT_PASSWORD: root
+  #      MYSQL_DATABASE: user_relation
+  #    volumes:
+  #    - ../../user-relation-mysql/data:/var/lib/mysql
+  #    networks:
+  #    - vkr-network
+  #
+  #  message-mysql:
+  #    image: mysql:5.6
+  #    ports:
+  #    - 3309:3306
+  #    command: [
+  #      --character-set-server=utf8mb4,
+  #      --collation-server=utf8mb4_unicode_ci
+  #    ]
+  #    environment:
+  #      MYSQL_ROOT_PASSWORD: root
+  #      MYSQL_DATABASE: message
+  #    volumes:
+  #    - ../../message-mysql/data:/var/lib/mysql
+  #    networks:
+  #    - vkr-network
+  #
+  #  group-mysql:
+  #    image: mysql:5.6
+  #    ports:
+  #    - 3310:3306
+  #    command: [
+  #      --character-set-server=utf8mb4,
+  #      --collation-server=utf8mb4_unicode_ci
+  #    ]
+  #    environment:
+  #      MYSQL_ROOT_PASSWORD: root
+  #      MYSQL_DATABASE: group
+  #    volumes:
+  #    - ../../group-mysql/data:/var/lib/mysql
+  #    networks:
+  #    - vkr-network
+  #
+  #  group-message-mysql:
+  #    image: mysql:5.6
+  #    ports:
+  #    - 3311:3306
+  #    command: [
+  #      --character-set-server=utf8mb4,
+  #      --collation-server=utf8mb4_unicode_ci
+  #    ]
+  #    environment:
+  #      MYSQL_ROOT_PASSWORD: root
+  #      MYSQL_DATABASE: group_message
+  #    volumes:
+  #    - ../../group-message-mysql/data:/var/lib/mysql
+  #    networks:
+  #    - vkr-network
+  #
+  #  offline-message-mysql:
+  #    image: mysql:5.6
+  #    ports:
+  #    - 3312:3306
+  #    command: [
+  #      --character-set-server=utf8mb4,
+  #      --collation-server=utf8mb4_unicode_ci
+  #    ]
+  #    environment:
+  #      MYSQL_ROOT_PASSWORD: root
+  #      MYSQL_DATABASE: offline_message
+  #    volumes:
+  #    - ../../offline-message-mysql/data:/var/lib/mysql
+  #    networks:
+  #    - vkr-network
+
+  common-mysql:
+    image: mysql:5.6
+    ports:
+    - 3308:3306
+    command: [
+      --character-set-server=utf8mb4,
+      --collation-server=utf8mb4_unicode_ci
+    ]
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: user_relation
+    volumes:
+    - ../../common-mysql/data:/var/lib/mysql
+    networks:
+    - vkr-network
+
+  # common service
+  user-service:
+    build:
+      context: ../../user-service
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - common-mysql
+    ports:
+      - 21003:8081
+    networks:
+      - vkr-network
+
+  user-relation-service:
+    build:
+      context: ../../user-relation-service
+      dockerfile: Dockerfile
+    depends_on:
+      - common-mysql
     restart: always
     ports:
-      - 7777:8080
-      - 7778:50000
-    volumes:
-      - /var/jenkins_home:/var/jenkins_home
+      - 21004:8081
+    networks:
+      - vkr-network
+
+  message-service:
+    build:
+      context: ../../message-service
+      dockerfile: Dockerfile
+    depends_on:
+    - common-mysql
+    restart: always
+    ports:
+      - 21005:8081
+    networks:
+      - vkr-network
+
+  group-service:
+    build:
+      context: ../../group-service
+      dockerfile: Dockerfile
+    depends_on:
+    - common-mysql
+    restart: always
+    ports:
+      - 21006:8081
+    networks:
+      - vkr-network
+
+  group-message-service:
+    build:
+      context: ../../group-message-service
+      dockerfile: Dockerfile
+    depends_on:
+    - common-mysql
+    restart: always
+    ports:
+      - 21007:8081
+    networks:
+      - vkr-network
+
+  offline-message-service:
+    build:
+      context: ../../offline-message-service
+      dockerfile: Dockerfile
+    depends_on:
+    - common-mysql
+    restart: always
+    ports:
+      - 21008:8081
+    networks:
+      - vkr-network
+
+  # ui-service
+  ui-service:
+    build:
+      context: ../../ui-service
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 80:8081
+      - 30002:8282
+    networks:
+      - vkr-network
+
+  # websocket service
+  websocket-server-service:
+    build:
+      context: ../../websocket-server-service
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 21002:8282
+    networks:
+      - vkr-network
+
 
 networks:
   vkr-network:

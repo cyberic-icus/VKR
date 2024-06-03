@@ -26,10 +26,6 @@ import static ru.rsreu.websocketserverservice.constant.Global.*;
 @Log
 public class MessageServiceImpl implements MessageService {
 
-    /**
-     * Не уверен, лучше ли каждому пользователю назначить отдельное соединение jedis или использовать одно общее.
-     * Пока что использую получение нового объекта jedis для каждого пользователя.
-     */
     AuthUser user = new AuthUser();
 
     @Override
@@ -41,28 +37,6 @@ public class MessageServiceImpl implements MessageService {
             log.info("Проверка токена пользователя не удалась, пожалуйста, войдите снова!");
             return;
         }
-
-        // Получение соединения Jedis
-//        jedis = JedisPoolUtil.getJedis();
-//        log.info("[Jedis:] : Получение соединения Jedis");
-//        // Если есть способ установить ключ и значение при инициализации redis, эту проверку можно пропустить
-//        // Увеличение числа онлайн пользователей
-//        if (jedis.exists(CONSTANT.ONLINE_COUNT)) {
-//            jedis.incr(CONSTANT.ONLINE_COUNT);
-//        } else {
-//            jedis.set(CONSTANT.ONLINE_COUNT, "1");
-//        }
-//        // Изменение статуса пользователя на "в сети" (сохранение объекта channel, хотя не уверен, можно ли это делать)
-//        // Более элегантное сохранение онлайн пользователей (хэш-таблица)
-////        this.self = ctx.channel();
-//        if (jedis.exists(CONSTANT.ONLINE_LIST)) {
-//            jedis.hset(CONSTANT.ONLINE_LIST, String.valueOf(user.getUserId()), JSON.toJSONString(ctx.channel()));
-//        } else {
-//            Map<String, String> onLineList = new HashMap<>();
-//            onLineList.put(String.valueOf(user.getUserId()), JSON.toJSONString(ctx.channel()));
-//            jedis.hmset(CONSTANT.ONLINE_LIST, onLineList);
-//        }
-//        log.info("[Сохранение объекта channel пользователя:] " + JSON.toJSONString(ctx.channel()));
         onLineList.put(user.getUserId(), ctx.channel());
         onLineNumber++;
     }
@@ -130,17 +104,6 @@ public class MessageServiceImpl implements MessageService {
         return onLineList.get(userId);
     }
 
-//    public String getMessage(Message message) {
-//        // Использовать JSONObject для создания Json данных
-//        JSONObject jsonObjectMessage = new JSONObject();
-//        jsonObjectMessage.put("from", String.valueOf(message.getFromId()));
-//        jsonObjectMessage.put("to", new String[]{String.valueOf(message.getToId())});
-//        jsonObjectMessage.put("content", String.valueOf(message.getContent()));
-//        jsonObjectMessage.put("type", String.valueOf(message.getType()));
-//        jsonObjectMessage.put("time", message.getTime().toString());
-//        return jsonObjectMessage.toString();
-//    }
-
     private void saveMessage(Message message, String baseUrl, String path) {
         MultiValueMap<String, Object> requestParams = new LinkedMultiValueMap<>();
         requestParams.add("fromId", message.getFromId());
@@ -150,16 +113,6 @@ public class MessageServiceImpl implements MessageService {
         requestParams.add("time", sdf.format(message.getTime()));
 
         sendSyncHttpRequest(baseUrl, path, requestParams);
-
-//        Mono<Response> response = WebClient.create(MESSAGE_BASE).post()
-//                .uri(ADD_MESSAGE)
-////                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-//                .syncBody(requestParams)
-//                .retrieve()
-//                .bodyToMono(Response.class);
-//        Response res = response.block();
-//        assert res != null;
-//        log.info("Я сохранил сообщение" + res.toString());
     }
 
     private void saveGroupMessage(Message message, String toId) {
@@ -172,17 +125,6 @@ public class MessageServiceImpl implements MessageService {
         requestParams.add("time", sdf.format(message.getTime()));
         sendSyncHttpRequest(GROUP_MESSAGE_BASE, ADD_GROUP_MESSAGE, requestParams);
     }
-
-//    private void saveOffLineMessage(Message message) {
-//        MultiValueMap<String, Object> requestParams = new LinkedMultiValueMap<>();
-//        requestParams.add("fromId", message.getFromId());
-//        requestParams.add("toId", message.getToId());
-//        requestParams.add("content", message.getContent());
-//        requestParams.add("type", message.getType());
-//        requestParams.add("time", sdf.format(message.getTime()));
-//
-//        sendSyncHttpRequest(OFFLINE_MESSAGE_BASE, ADD_OFFLINE_MESSAGE, requestParams);
-//    }
 
     private void sendSyncHttpRequest(String baseURL, String path, MultiValueMap requestParams) {
         Mono<Response> response = WebClient.create(baseURL).post()

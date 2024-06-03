@@ -6,8 +6,8 @@ function checkLogin() {
     if (user.userName === '') {
         layer.msg('Имя пользователя не может быть пустым', {icon: 2});
         return;
-    } else if (user.userName.length >= 12) {
-        layer.msg('Длина имени пользователя не должна превышать 12 символов', {icon: 2});
+    } else if (user.userName.length >= 30) {
+        layer.msg('Длина имени пользователя не должна превышать 30 символов', {icon: 2});
         return;
     } else if (user.userPassword === '') {
         layer.msg('Пароль не может быть пустым', {icon: 2});

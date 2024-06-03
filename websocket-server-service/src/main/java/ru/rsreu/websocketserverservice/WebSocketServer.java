@@ -17,27 +17,8 @@ public class WebSocketServer {
 
     public static void main(String[] args) throws CertificateException, SSLException {
         new WebSocketServer().run();
-//        MessageServiceImpl messageService = new MessageServiceImpl();
-//        Message message = new Message();
-//        message.setFromId(1);
-//        message.setToId(2);
-//        message.setTime(Timestamp.valueOf(sdf.format(new Date())));
-//        message.setContent("234");
-//        message.setType(1);
-//        messageService.saveMessage(message);
     }
 
-//    public void initNetty() {
-//        new Thread() {
-//            public void run() {
-//                try {
-//                    new WebSocketServer().run();
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }.start();
-//    }
 
     public void run() {
 
